@@ -1,0 +1,80 @@
+• Inserciones: 
+1.	Inserte un nuevo paciente en su base de datos, luego agregue una cita médica con uno de los doctores. 
+
+insert into paciente (numero_documento, nombre, apellido, fecha_nacimiento, id_genero, id_tipo_sangre, id_tipo_identificacion, direccion, numero) values 
+(1002262977, 'Cesar', 'Soto', '2001-07-09', 1, 5, 1, 'Calle 13 # 24-29', '3226126858');
+
+insert into cita_medica (numero_documento_paciente, numero_licencia_medica_doctor, fecha, motivo) values 
+(1002262977, 10001, '2024-09-16 08:00:00', 'Chequeo general');
+
+2.	Cree un nuevo diagnóstico para el paciente que creó anteriormente y asigne un tratamiento, el tratamiento debe tener un medicamento asociado. 
+
+insert into tratamiento (numero_documento_paciente, numero_licencia_medica_doctor, fecha_inicio, fecha_fin, observaciones) 
+values (1002262977, 10001, '2024-09-16 09:00:00', '2024-10-17 09:00:00', 'Tratamiento para dolor agudo del pecho');
+
+insert into diagnostico (id_cita_medica, id_tratamiento, diagnostico) 
+values (7, 7, 'dolor agudo en el pecho(falta de respiracion');
+
+insert into prescripcion_medicamentos (codigo_medicamento, id_tratamiento, dosis, frecuencia_administracion) 
+values (102, 7, '400 mg', 'cada 6 horas según sea necesario');
+
+
+• Consultas:
+
+3.	Realice una sola consulta que permita conocer todas las alergias, enfermedades         previas, Tratamientos y Cirugías realizadas a un paciente (es decir el historial médico) 
+select 
+    p.numero_documento AS Numero_Documento,
+    p.nombre AS Nombre_Paciente,
+    p.apellido AS Apellido_Paciente,
+    re.nombre AS Alergia_O_Enfermedad,
+    t.observaciones AS Tratamiento,
+    t.fecha_inicio AS Fecha_Inicio_Tratamiento,
+    t.fecha_fin AS Fecha_Fin_Tratamiento,
+    d.nombre AS Nombre_Doctor,
+    d.apellido AS Apellido_Doctor
+from historial_medico hm 
+inner join tratamiento t on t.id_tratamiento = hm.id_tratamiento 
+inner join paciente p on p.numero_documento = hm.numero_documento_paciente 
+inner join doctor d on d.numero_licencia_medica = hm.numero_licencia_medica_doctor 
+inner join registro_enfermedades re on re.id_registro = hm.id_registro_enfermedades
+where p.numero_documento = 100000001;
+
+
+4.	Realice una consulta que devuelva un histograma de la cantidad de pacientes que tiene registrado el hospital por tipo de sangre.
+ 
+select ts.tipo_sangre, count(p.numero_documento) as Cantidad  from paciente p 
+inner join tipo_sangre ts on ts.id_tipo_sangre = p.id_tipo_sangre
+group by ts.tipo_sangre 
+order by Cantidad desc;
+
+• Actualizaciones 
+
+5.	Actualice la especialidad de un Doctor en base de datos. 
+
+update doctor 
+set id_especialidad = 4
+where numero_licencia_medica = 10003;
+
+6.	Actualice el número de un contacto de emergencia en base de datos. 
+
+update contacto_emergencia
+set numero = '3102663573'
+where id_contacto = 1;
+
+• Eliminaciones 
+
+7.	Elimine una cita médica asignada a un paciente en base de datos. 
+delete from diagnostico 
+where id_cita_medica = 7;
+delete from cita_medica 
+where id_cita_medica = 7;
+
+8.	Elimine un tratamiento asignado a un paciente de base de datos
+delete from diagnostico 
+where id_tratamiento = 1;
+delete from prescripcion_medicamentos 
+where id_tratamiento = 1;
+delete from historial_medico 
+where id_tratamiento = 1;
+delete from tratamiento 
+where id_tratamiento = 1;

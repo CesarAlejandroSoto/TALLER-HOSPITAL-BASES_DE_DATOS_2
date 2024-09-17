@@ -1,0 +1,174 @@
+-- Tabla genero
+create table genero(
+	id_genero serial primary key,
+	genero varchar(50) not null	
+);
+
+-- Tabla tipo_sangre
+create table tipo_sangre(
+	id_tipo_sangre serial primary key,
+	tipo_sangre varchar(70) not null
+);
+
+-- Tabla tipo_identificacion
+create table tipo_identificacion(
+	id_tipo_identificacion serial primary key,
+	tipo_identificacion varchar(50) not null
+);
+
+-- Tabla paciente
+create table paciente(
+	numero_documento int primary key not null,
+	nombre varchar(60) not null,
+	apellido varchar(60) not null,
+	fecha_nacimiento date not null,
+	direccion varchar(100) not null,
+	numero varchar(40) not null,
+	id_genero int not null,
+	id_tipo_sangre int not null,
+	id_tipo_identificacion int not null,
+	
+	constraint paciente_id_genero_FK1 foreign key (id_genero) references genero(id_genero),
+	constraint paciente_tipo_sangre_FK2 foreign key (id_tipo_sangre) references tipo_sangre(id_tipo_sangre),
+	constraint paciente_tipo_identificacion_FK3 foreign key (id_tipo_identificacion) references tipo_identificacion(id_tipo_identificacion)
+);
+
+-- Tabla contacto_emergencia
+create table contacto_emergencia(
+	id_contacto serial primary key,
+	nombre varchar(60) not null,
+	numero varchar(40) not null
+);
+
+-- Tabla paciente_contacto_emergencia
+create table paciente_contacto_emergencia(
+	numero_documento_paciente int not null,
+	id_contacto_emergencia int not null,
+	relacion varchar(80) not null,
+	
+	constraint paciente_contacto_paciente_FK1 foreign key (numero_documento_paciente) references paciente(numero_documento),
+	constraint paciente_contacto_contacto_FK2 foreign key (id_contacto_emergencia) references contacto_emergencia(id_contacto)
+);
+
+-- Tabla habitacion
+create table habitacion(
+	numero_habitacion int primary key not null,
+	piso int not null
+);
+
+-- Tabla cama
+create table cama(
+	id_cama int primary key not null,
+	numero_habitacion int not null,
+	disponible boolean not null,
+	
+	constraint cama_habitacion_FK1 foreign key (numero_habitacion) references habitacion(numero_habitacion)
+);
+
+-- Tabla hospitalizacion
+create table hospitalizacion(
+	id_hospitalizacion serial primary key not null,
+	numero_documento_paciente int not null,
+	id_cama int not null,
+	fecha_ingreso timestamp not null,
+	fecha_salida timestamp,
+	activo boolean not null,
+	
+	constraint hospitalizacion_paciente_FK1 foreign key (numero_documento_paciente) references paciente(numero_documento),
+	constraint hospitalizacion_cama_FK2 foreign key (id_cama) references cama(id_cama)
+);
+
+-- Tabla especialidad
+create table especialidad(
+	id_especialidad serial primary key not null,
+	nombre_especialidad varchar(60) not null
+);
+
+-- Tabla doctor
+create table doctor(
+	numero_licencia_medica int primary key not null,
+	nombre varchar(60) not null,
+	apellido varchar(69) not null,
+	numero_telefono varchar(50) not null,
+	correo varchar(90) not null,
+	id_especialidad int not null,
+	
+	constraint doctor_especialidad_FK1 foreign key (id_especialidad) references especialidad(id_especialidad)
+);
+
+-- Tabla cita_medica
+create table cita_medica(
+	id_cita_medica serial primary key not null,
+	numero_documento_paciente int not null,
+	numero_licencia_medica_doctor int not null,
+	fecha timestamp not null,
+	motivo varchar(200) not null,
+	
+	constraint cita_paciente_FK1 foreign key (numero_documento_paciente) references paciente(numero_documento),
+	constraint cita_doctor_FK2 foreign key (numero_licencia_medica_doctor) references doctor(numero_licencia_medica)
+);
+
+-- Tabla tratamiento
+create table tratamiento(
+	id_tratamiento serial primary key not null,
+	numero_documento_paciente int not null,
+	numero_licencia_medica_doctor int not null,
+	fecha_inicio timestamp not null,
+	fecha_fin timestamp,
+	observaciones varchar(400),
+	
+	constraint tratamiento_paciente_FK1 foreign key (numero_documento_paciente) references paciente(numero_documento),
+	constraint tratamiento_doctor_FK1 foreign key (numero_licencia_medica_doctor) references doctor(numero_licencia_medica)
+);
+
+-- Tabla diagnostico
+create table diagnostico(
+	id_diagnostico serial primary key not null,
+	id_cita_medica int not null,
+	id_tratamiento int not null,
+	diagnostico varchar(300) not null,
+	
+	constraint diagnostico_cita_FK1 foreign key (id_cita_medica) references cita_medica(id_cita_medica),
+	constraint diagnostico_tratamiento_FK2 foreign key (id_tratamiento) references tratamiento(id_tratamiento)
+);
+
+-- Tabla medicamento
+create table medicamento(
+	codigo_medicamento int primary key not null,
+	nombre varchar(400) not null,
+	indicaciones_uso varchar(400) not null,
+	contraindicaciones varchar(400) not null
+);
+
+-- Tabla prescripcion_medicamentos
+create table prescripcion_medicamentos(
+	id_prescripcion serial primary key not null,	
+	codigo_medicamento int not null,
+	id_tratamiento int not null,
+	dosis varchar(400) not null,
+	frecuencia_administracion varchar(400) not null,
+	
+	constraint prescripcion_medicamento_FK1 foreign key (codigo_medicamento) references medicamento(codigo_medicamento),
+	constraint prescripcion_tratamiento_FK2 foreign key (id_tratamiento) references tratamiento(id_tratamiento)
+);
+
+-- Tabla registro (renombrada para mayor claridad)
+create table registro_enfermedades(
+	id_registro serial primary key,
+	nombre varchar(100) not null
+);
+
+-- Tabla historial_medico
+create table historial_medico(
+	id_historial_medico serial primary key,
+	id_tratamiento int,
+	numero_documento_paciente int not null,
+	numero_licencia_medica_doctor bigint,
+	fecha date not null,
+	id_registro_enfermedades int not null,
+	
+	constraint historial_tratamiento_FK1 foreign key (id_tratamiento) references tratamiento(id_tratamiento),
+	constraint historial_paciente_FK2 foreign key (numero_documento_paciente) references paciente(numero_documento),
+	constraint historial_doctor_FK3 foreign key (numero_licencia_medica_doctor) references doctor(numero_licencia_medica),
+	constraint historial_registro_FK4 foreign key (id_registro_enfermedades) references registro_enfermedades(id_registro)
+);

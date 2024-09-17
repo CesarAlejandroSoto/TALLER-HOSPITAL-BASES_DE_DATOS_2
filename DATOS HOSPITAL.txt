@@ -1,0 +1,207 @@
+--Tabla genero
+INSERT INTO genero (genero) VALUES ('Masculino');
+INSERT INTO genero (genero) VALUES ('Femenino');
+INSERT INTO genero (genero) VALUES ('Otros');
+
+--Tabla tipo de sangre
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('A+');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('A-');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('B+');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('B-');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('AB+');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('AB-');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('O+');
+INSERT INTO tipo_sangre (tipo_sangre) VALUES ('O-');
+
+--Tabla tipo de identificación
+INSERT INTO tipo_identificacion (tipo_identificacion) VALUES 
+('Cedula de ciudadanía'),
+('Tarjeta de identidad'),
+ ('Cedula extranjera');
+
+--Tabla paciente
+INSERT INTO paciente (numero_documento, nombre, apellido, fecha_nacimiento, direccion, numero, id_genero, id_tipo_sangre, id_tipo_identificacion) 
+VALUES 
+ (100000001, 'Juan', 'Pérez', '1990-05-15', 'Calle 123 #45-67', '3121234567', 1, 1, 1),
+ (100000002, 'María', 'González', '1985-10-20', 'Carrera 5 #10-20', '3187654321', 2, 2, 2),
+ (100000003, 'Alex', 'Rodríguez', '1995-08-25', 'Av. Siempre Viva #742', '3109876543', 3, 3, 3),
+ (100000004, 'Carlos', 'Martínez', '1982-02-10', 'Calle 10 #5-23', '3001234567', 1, 2, 1),
+ (100000005, 'Sofía', 'López', '1998-07-30', 'Carrera 11 #34-56', '3128765432', 2, 1, 2),
+ (100000006, 'David', 'García', '1993-11-12', 'Avenida Las Flores #90', '3017654321', 1, 3, 3),
+ (100000007, 'Lucía', 'Ramírez', '1991-03-05', 'Calle 45 #12-89', '3209876543', 2, 2, 1),
+ (100000008, 'Andrés', 'Fernández', '1987-08-22', 'Carrera 9 #8-14', '3116543210', 1, 3, 3),
+ (100000009, 'Camila', 'Moreno', '1996-12-18', 'Calle 13 #23-45', '3151230987', 2, 1, 2),
+ (100000010, 'Jorge', 'Ruiz', '1989-09-09', 'Calle 6 #18-90', '3201234567', 1, 2, 1);
+
+--Tabla contacto emergencia
+INSERT INTO contacto_emergencia (nombre, numero) VALUES 
+('Laura Pérez', '3123456789'),
+('Carlos Gómez', '3101234567'),
+('Ana Torres', '3187654321'),
+('Mario Rodríguez', '3119876543'),
+('Lucía Fernández', '3120987654'),
+('Camila López', '3001230987'),
+('Pedro Ramírez', '3209876543'),
+('Marta Sánchez', '3151234567'),
+('Ricardo Moreno', '3217654321'),
+('Sofía Jiménez', '3198765432');
+
+--Tabla paciente contacto emergencia
+INSERT INTO paciente_contacto_emergencia (numero_documento_paciente, id_contacto_emergencia, relacion) 
+VALUES 
+(100000001, 1, 'Hermana'),
+(100000002, 2, 'Padre'),
+(100000003, 3, 'Esposa'),
+(100000004, 4, 'Amigo'),
+(100000005, 5, 'Madre'),
+(100000006, 6, 'Novia'),
+(100000007, 7, 'Hermano'),
+(100000008, 8, 'Prima'),
+(100000009, 9, 'Tío'),
+(100000010, 10, 'Amiga');
+
+--Tabla habitacion
+INSERT INTO habitacion (numero_habitacion, piso) 
+VALUES 
+(101, 1),
+(102, 1),
+(201, 2),
+(202, 2),
+(301, 3),
+(302, 3),
+(401, 4),
+(402, 4),
+(501, 5),
+(502, 5);
+
+
+--Tabla cama
+INSERT INTO cama (id_cama, numero_habitacion, disponible) 
+VALUES 
+(1, 101, FALSE),  
+(2, 102, TRUE),   
+(3, 201, FALSE),  
+(4, 202, TRUE),   
+(5, 301, FALSE),  
+(6, 302, TRUE),   
+(7, 401, TRUE),   
+(8, 402, FALSE), 
+(9, 501, TRUE),  
+(10, 502, TRUE);
+
+
+--Tabla hospitalización
+INSERT INTO hospitalizacion (numero_documento_paciente, id_cama, fecha_ingreso, fecha_salida, activo) 
+VALUES 
+(100000001, 1, '2024-09-01 09:00:00', NULL, TRUE),
+(100000002, 2, '2024-08-20 10:00:00', '2024-08-30 12:00:00', FALSE),
+(100000003, 3, '2024-09-02 08:30:00', NULL, TRUE),
+(100000004, 4, '2024-08-15 14:00:00', '2024-08-25 11:30:00', FALSE),
+(100000005, 5, '2024-09-03 13:00:00', NULL, TRUE),
+(100000006, 6, '2024-08-18 10:00:00', '2024-08-28 10:00:00', FALSE),
+(100000007, 7, '2024-08-05 12:00:00', '2024-08-15 14:00:00', FALSE),
+(100000008, 8, '2024-09-04 07:00:00', NULL, TRUE),
+(100000009, 9, '2024-08-20 09:00:00', '2024-09-01 08:00:00', FALSE),
+(100000010, 10, '2024-09-03 15:30:00', '2024-09-05 10:30:00', FALSE);
+
+
+--Tabla especialidad
+INSERT INTO especialidad (nombre_especialidad) 
+VALUES 
+('Cardiologia'),
+('Medicina interna'),
+('Neumologia'),
+('Pediatria'),
+('Cirugia general');
+
+
+
+--Tabla doctor
+INSERT INTO doctor (numero_licencia_medica, nombre, apellido, numero_telefono, correo, id_especialidad) 
+VALUES 
+(10001, 'Ana', 'Gómez', '3136958745', 'ana.gomez@hospital.com', 1), 
+(10002, 'Carlos', 'Ramírez', '3124549693', 'carlos.ramir@hospital.com', 2), 
+(10003, 'Laura', 'Martínez', '3158759699', 'laura.martin@hospital.com', 3), 
+(10004, 'José', 'Hernández', '3120365211', 'jose.hernand@hospital.com', 4),
+(10005, 'Marta', 'Vázquez', '3132008574', 'marta.vazquez@hospital.com', 5), 
+(10006, 'Ricardo', 'Torres', '3206547120', 'ricardo.torr@hospital.com', 2);
+
+
+--Tabla cita medica
+INSERT INTO cita_medica (numero_documento_paciente, numero_licencia_medica_doctor, fecha, motivo) 
+VALUES
+(100000001, 10001, '2024-09-01 08:00:00', 'Revisión cardiológica'),
+(100000002, 10002, '2024-08-20 09:30:00', 'Chequeo general'),
+(100000003, 10003, '2024-09-02 08:00:00', 'Evaluación respiratoria'),
+(100000004, 10004, '2024-08-15 13:00:00', 'Consulta pediátrica'),
+(100000005, 10005, '2024-09-03 12:00:00', 'Evaluación quirúrgica'),
+(100000006, 10006, '2024-08-18 09:30:00', 'Chequeo de seguimiento');
+
+
+--Tabla tratamiento
+INSERT INTO tratamiento (numero_documento_paciente, numero_licencia_medica_doctor, fecha_inicio, fecha_fin, observaciones) 
+VALUES
+(100000001, 10001, '2024-09-01 10:30:00', '2024-09-30 10:30:00', 'Tratamiento para hipertensión'),
+(100000002, 10002, '2024-08-20 12:00:00', '2024-09-25 12:00:00', 'Medicamentos para diabetes'),
+(100000003, 10003, '2024-09-02 09:30:00', '2024-10-02 09:30:00', 'Tratamiento para asma'),
+(100000004, 10004, '2024-08-15 14:30:00', '2024-09-20 14:30:00', 'Tratamiento para fiebre'),
+(100000005, 10005, '2024-09-03 12:30:00', '2024-10-03 08:30:00', 'Tratamiento post-quirúrgico'),
+(100000006, 10006, '2024-08-18 11:30:00', '2024-09-30 13:30:00', 'Chequeo y ajuste de medicación');
+
+
+--Tabla diagnostico
+INSERT INTO diagnostico (id_cita_medica, id_tratamiento, diagnostico) 
+VALUES 
+(1, 1, 'Hipertensión controlada'),
+(2, 2, 'Diabetes tipo 2 bajo control'),
+(3, 3, 'Asma leve'),
+(4, 4, 'Fiebre viral'),
+(5, 5, 'Post-operatorio exitoso'),
+(6, 6, 'Ajuste de medicación necesario');
+
+
+--Tabla medicamento
+INSERT INTO medicamento (codigo_medicamento, nombre, indicaciones_uso, contraindicaciones) 
+VALUES 
+(101, 'Amoxicilina', 'Tratamiento de infecciones bacterianas', 'Alergia a la penicilina'),
+(102, 'Ibuprofeno', 'Alivio del dolor y la inflamación', 'Úlcera péptica activa, insuficiencia renal grave'),
+(103, 'Paracetamol', 'Alivio del dolor leve a moderado y la fiebre', 'Hepatopatía grave'),
+(104, 'Metformina', 'Tratamiento de la diabetes tipo 2', 'Insuficiencia renal grave, acidosis metabólica'),
+(105, 'Enalapril', 'Tratamiento de la hipertensión arterial', 'Angioedema, embarazo'),
+(106, 'Omeprazol', 'Tratamiento de úlceras gástricas y reflujo gastroesofágico', 'Hipersensibilidad a los inhibidores de la bomba de protones'),
+(107, 'Atorvastatina', 'Reducción del colesterol y triglicéridos', 'Enfermedad hepática activa, embarazo'),
+(108, 'Losartán', 'Tratamiento de la hipertensión y la insuficiencia cardíaca', 'Hipersensibilidad a los antagonistas de los receptores de angiotensina II'),
+(109, 'Furosemida', 'Tratamiento de la hipertensión y la retención de líquidos', 'Anuria, coma hepático'),
+(110, 'Levotiroxina', 'Tratamiento del hipotiroidismo', 'Infarto agudo de miocardio no tratado, insuficiencia suprarrenal no tratada');
+
+
+--Tabla prescripción medicamento
+INSERT INTO prescripcion_medicamentos (codigo_medicamento, id_tratamiento, dosis, frecuencia_administracion) 
+VALUES 
+(101, 1, '500 mg', 'Cada 8 horas durante 7 días'),
+(102, 2, '400 mg', 'Cada 6 horas según sea necesario'),
+(103, 3, '500 mg', 'Cada 8 horas según sea necesario'),
+(104, 4, '850 mg', 'Dos veces al día'),
+(105, 5, '10 mg', 'Una vez al día'),
+(106, 6, '20 mg', 'Una vez al día antes de las comidas'),
+(107, 1, '40 mg', 'Una vez al día por la noche'),
+(108, 2, '50 mg', 'Una vez al día'),
+(109, 3, '40 mg', 'Una vez al día en la mañana'),
+(110, 4, '100 mg', 'Una vez al día después de las comidas');
+
+INSERT INTO registro_enfermedades (nombre) 
+VALUES 
+('Enfermedades previas'), 
+('Alergias'), 
+('Cirugías');
+
+
+--Tabla historial medico
+INSERT INTO historial_medico (id_tratamiento, numero_documento_paciente, numero_licencia_medica_doctor, fecha, id_registro_enfermedades)
+VALUES 
+(1, 100000001, 10001, '2024-09-01', 1),
+(2, 100000002, 10002, '2024-08-20', 2), 
+(3, 100000003, 10003, '2024-09-02', 3), 
+(4, 100000004, 10004, '2024-08-15', 1), 
+(5, 100000005, 10005, '2024-09-03', 1), 
+(6, 100000006, 10006, '2024-08-18', 2); 
